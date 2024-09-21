@@ -1,0 +1,28 @@
+{
+    "manifest_version": 3,
+    "name": "Top Hat Notifier",
+    "version": "1.0",
+    "description": "Notifies you when a Top Hat question goes live",
+    "action": {
+        "default_popup": "top-hat.html",
+        "default_icon": "images/tophat_logo.png"
+    },
+    "permissions": [
+        "activeTab", 
+        "notifications", 
+        "tabs", 
+        "scripting"
+    ],
+    "host_permissions": [
+        "https://app.tophat.com/*"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": ["https://app.tophat.com/*"],
+            "js": ["content.js"]
+        }
+    ]
+}

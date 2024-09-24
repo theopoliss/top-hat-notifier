@@ -3,9 +3,18 @@
     "name": "Top Hat Notifier",
     "version": "1.0",
     "description": "Notifies you when a Top Hat question goes live",
+    "icons": {
+        "16": "images/tophat16.png",
+        "48": "images/tophat48.png",
+        "128": "images/tophat128.png"
+    },
     "action": {
         "default_popup": "top-hat.html",
-        "default_icon": "images/tophat_logo.png"
+        "default_icon": {
+            "16": "images/tophat16.png",
+            "48": "images/tophat48.png",
+            "128": "images/tophat128.png"
+        }
     },
     "permissions": [
         "activeTab", 

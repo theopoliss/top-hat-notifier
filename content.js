@@ -1,4 +1,6 @@
 let observer = null;
+const MAX_RETRIES = 10;
+const RETRY_INTERVAL = 2000; // 1 second
 
 // Listen for messages from the background script
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
@@ -10,45 +12,70 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     }
 });
 
+// function startObserving() {
+//     if (document.readyState === "loading") {
+//         document.addEventListener("DOMContentLoaded", initializeObserver);
+//     } else {
+//         initializeObserver();
+//     }
+// }
+
 function startObserving() {
     if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initializeObserver);
+        document.addEventListener("DOMContentLoaded", () => waitForElement('[class*="BlankStateContent"]', initializeObserver));
     } else {
-        initializeObserver();
+        waitForElement('[class*="BlankStateContent"]', initializeObserver);
     }
 }
 
-function initializeObserver() {
-    console.log('DOM fully loaded. Now starting to observe');
-    const containerNode = document.querySelector('.StudentContentTreestyles__SectionText-sc-1pbqzkq-6 gzEpvk');
-    console.log(containerNode);
+function waitForElement(selector, callback, retryCount = 0) {
+    const element = document.querySelector(selector);
+    if (element) {
+        console.log(`Element ${selector} found.`);
+        callback(element);
+    } else if (retryCount < MAX_RETRIES) {
+        console.log(`Element ${selector} not found. Retrying in ${RETRY_INTERVAL}ms...`);
+        setTimeout(() => waitForElement(selector, callback, retryCount + 1), RETRY_INTERVAL);
+    } else {
+        console.log(`Element ${selector} not found after ${MAX_RETRIES} attempts. Initializing observer on body.`);
+        callback(document.body); // Fall back to observing the body if the element is never found
+    }
+}
+
+function initializeObserver(containerNode) {
+    // console.log('DOM fully loaded. Now starting to observe');
+    // const containerNode = document.querySelector('.course-container');
+    // const containerNode = document.querySelector('[class*="BlankStateContent"]');
+
+    console.log('Initializing observer on:', containerNode);
     
     if (containerNode) {
         observer = new MutationObserver(function(mutations) {
             // containerNode children modified
-            mutations.forEach(function(mutation) {
-                if (mutation.type === "childList") {
-                    console.log('Child nodes have changed in containerNode');
+            // mutations.forEach(function(mutation) {
+            //     if (mutation.type === "childList") {
+            //         console.log('Child nodes have changed in containerNode');
 
-                    // Log the nodes that were added
-                    if (mutation.addedNodes.length > 0) {
-                        console.log('Added nodes:');
-                        mutation.addedNodes.forEach(function(node) {
-                            console.log(node);
-                        });
-                    }
+            //         // Log the nodes that were added
+            //         if (mutation.addedNodes.length > 0) {
+            //             console.log('Added nodes:');
+            //             mutation.addedNodes.forEach(function(node) {
+            //                 console.log(node);
+            //             });
+            //         }
 
-                    // Log the nodes that were removed
-                    if (mutation.removedNodes.length > 0) {
-                        console.log('Removed nodes:');
-                        mutation.removedNodes.forEach(function(node) {
-                            console.log(node);
-                        });
-                    }
-
-                    chrome.runtime.sendMessage({ action: "poll_detected" });
-                }
-            });
+            //         // Log the nodes that were removed
+            //         if (mutation.removedNodes.length > 0) {
+            //             console.log('Removed nodes:');
+            //             mutation.removedNodes.forEach(function(node) {
+            //                 console.log(node);
+            //             });
+            //         }
+            //         if (mutation.addedNodes)
+            //         chrome.runtime.sendMessage({ action: "poll_detected" });
+            //     }
+            // });
+            
             // containerNode was deleted
             if (!document.body.contains(containerNode)) {
                 console.log('New content detected! Poll/question may be active');

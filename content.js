@@ -12,20 +12,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     }
 });
 
-// function startObserving() {
-//     if (document.readyState === "loading") {
-//         document.addEventListener("DOMContentLoaded", initializeObserver);
-//     } else {
-//         initializeObserver();
-//     }
-// }
-
 function startObserving() {
     if (document.readyState === "loading") {
-        // document.addEventListener("DOMContentLoaded", () => waitForElement('[class*="BlankStateContent"]', initializeObserver));
         document.addEventListener("DOMContentLoaded", () => waitForElement('[class*="StudentContentTree"]', initializeObserver));
     } else {
-        // waitForElement('[class*="BlankStateContent"]', initializeObserver);
         waitForElement('[class*="StudentContentTree"]', initializeObserver);
     }
 }
@@ -45,16 +35,10 @@ function waitForElement(selector, callback, retryCount = 0) {
 }
 
 function initializeObserver(containerNode) {
-    // console.log('DOM fully loaded. Now starting to observe');
-    // const containerNode = document.querySelector('.course-container');
-    // const containerNode = document.querySelector('[class*="BlankStateContent"]');
-
     console.log('Initializing observer on:', containerNode);
     
     if (containerNode) {
         observer = new MutationObserver(function(mutations) {
-            // LectureBodyStudentstyles__LectureBodyStudentWrapper-sc-j7kpbs-0 fVeXVS course_body
-
             // containerNode children modified
             mutations.forEach(function(mutation) {
                 if (mutation.type === "childList") {
@@ -84,10 +68,6 @@ function initializeObserver(containerNode) {
                             console.log(node);
                         });
                     }
-                    // Detect poll if nodes are added
-                    // if (mutation.addedNodes) {
-                    //     chrome.runtime.sendMessage({ action: "poll_detected" });
-                    // }
                 }
             });
 

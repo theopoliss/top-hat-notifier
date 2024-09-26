@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
     "name": "TopHat Question Notifier",
-    "version": "0.0.1",
-    "description": "Extension that notifies you when a question goes live in your TopHat class. You must be in the 'Classroom' tab of your TopHat class.",
+    "version": "0.0.2",
+    "description": "Extension that notifies you when a question goes live in your TopHat class.",
     "icons": {
         "16": "images/tophat16.png",
         "48": "images/tophat48.png",

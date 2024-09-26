@@ -16,8 +16,7 @@
             "128": "images/tophat128.png"
         }
     },
-    "permissions": [
-        "activeTab", 
+    "permissions": [ 
         "notifications", 
         "tabs", 
         "scripting"

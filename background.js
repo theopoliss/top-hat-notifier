@@ -12,6 +12,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     }
 });
 
+// Inject content.js when user is on 'Classroom' tab
 function injectContentScript(tabId) {
     chrome.scripting.executeScript(
         {

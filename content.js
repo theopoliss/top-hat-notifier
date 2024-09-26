@@ -51,12 +51,10 @@ function initializeObserver(containerNode) {
                             console.log(node);
 
                             // Detect if list_item nodes were added
-                            if (node.nodeType === Node.ELEMENT_NODE && node.classList) {
+                            if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'LI') {
                                 const className = node.className;
-                                if (className.includes('StudentContentTree')) {
-                                    console.log('Node with "list_item" appeared');
-                                    chrome.runtime.sendMessage({ action: "poll_detected" });
-                                }
+                                console.log('Node with <li> element appeared');
+                                chrome.runtime.sendMessage({ action: "poll_detected" });
                             }
                         });
                     }
@@ -74,8 +72,8 @@ function initializeObserver(containerNode) {
             // containerNode was deleted
             if (!document.body.contains(containerNode)) {
                 console.log('Container Node deleted');
-                // chrome.runtime.sendMessage({action: "poll_detected"});
-                stopObserving();
+                chrome.runtime.sendMessage({ action: "poll_detected" });
+                startObserving();
             }
         });
 

@@ -36,9 +36,15 @@ function waitForElement(selector, callback, retryCount = 0) {
 
 function initializeObserver(containerNode) {
     console.log('Initializing observer on:', containerNode);
-    
+
     if (containerNode) {
         observer = new MutationObserver(function(mutations) {
+            // containerNode was deleted
+            if (!document.body.contains(containerNode)) {
+                console.log('Container Node deleted');
+                chrome.runtime.sendMessage({ action: "poll_detected" });
+                stopObserving();
+            }
             // containerNode children modified
             mutations.forEach(function(mutation) {
                 if (mutation.type === "childList") {
@@ -68,13 +74,6 @@ function initializeObserver(containerNode) {
                     }
                 }
             });
-
-            // containerNode was deleted
-            if (!document.body.contains(containerNode)) {
-                console.log('Container Node deleted');
-                chrome.runtime.sendMessage({ action: "poll_detected" });
-                startObserving();
-            }
         });
 
         const config = { childList: true, subtree: true, attributes: true };

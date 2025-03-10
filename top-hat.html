@@ -1,6 +1,86 @@
-<html></html>
-  <body>
-    <h3>TopHat Question Notifier Extension</h3>
-    <p>Please go to the "Classroom" tab of your TopHat class</p>
-  </body>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>TopHat Question Notifier</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      width: 300px;
+      padding: 15px;
+      color: #333;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .header img {
+      width: 32px;
+      height: 32px;
+      margin-right: 10px;
+    }
+    h3 {
+      margin: 0;
+      color: #d13239;
+    }
+    .status-container {
+      margin: 15px 0;
+      padding: 10px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+    }
+    .status-indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+    .connected {
+      background-color: #e8f5e9;
+      border: 1px solid #a5d6a7;
+    }
+    .connected .status-indicator {
+      background-color: #4caf50;
+    }
+    .disconnected {
+      background-color: #ffebee;
+      border: 1px solid #ef9a9a;
+    }
+    .disconnected .status-indicator {
+      background-color: #f44336;
+    }
+    .instructions {
+      background-color: #e3f2fd;
+      padding: 10px;
+      border-radius: 5px;
+      border-left: 4px solid #2196f3;
+      margin-top: 15px;
+    }
+    .instructions p {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <img src="images/tophat48.png" alt="TopHat Logo">
+    <h3>TopHat Question Notifier</h3>
+  </div>
+  
+  <div id="status-container" class="status-container disconnected">
+    <div class="status-indicator"></div>
+    <div id="status-text">Disconnected</div>
+  </div>
+  
+  <div class="instructions">
+    <p><strong>How to use:</strong></p>
+    <p>1. Navigate to your TopHat course</p>
+    <p>2. Click on the "<strong>Classroom</strong>" tab</p>
+    <p>3. The extension will automatically notify you when a new question goes live</p>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
 </html>

@@ -4,6 +4,9 @@ let activeTabsWithContentScript = new Set();
 // Listen for tab updates
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     if (changeInfo.status === 'complete' && tab.url && tab.url.includes("app.tophat.com")) {
+        // Don't automatically open popup here
+        // We'll open it after confirming the observer is active
+        
         if (tab.url.includes("lecture")) {
             injectContentScript(tabId);
         } else {
@@ -29,6 +32,17 @@ function injectContentScript(tabId) {
                         console.error("Error starting observation: " + chrome.runtime.lastError.message);
                     } else {
                         console.log("Observation started successfully.");
+                        
+                        // Wait a moment for the observer to fully initialize
+                        setTimeout(() => {
+                            // Check if observer is active before showing popup
+                            chrome.tabs.sendMessage(tabId, { action: "check_status" }, function(statusResponse) {
+                                if (statusResponse && statusResponse.observing) {
+                                    // Now open the popup with the correct status
+                                    chrome.action.openPopup();
+                                }
+                            });
+                        }, 1000); // Wait 1 second
                     }
                 });
             }
@@ -66,6 +80,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         });
         sendResponse({ status: "Notification sent" });
     }
+    return true; // Keep the message channel open for async responses
 });
 
 // Listen for tab removal

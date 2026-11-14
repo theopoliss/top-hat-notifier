@@ -1,0 +1,299 @@
+:root {
+  --bg: #ffffff;
+  --text: #202124;
+  --text-muted: #5f6368;
+  --line: #e0e0e0;
+  --surface: #f1f3f4;
+  --surface-hover: #e8eaed;
+  --surface-press: #dadce0;
+  --accent: #d13239;
+  --focus: #1a73e8;
+  --switch-off: #80868b;
+
+  /* Status tones: background, border, dot */
+  --ok-bg: #e8f5e9;
+  --ok-line: #a5d6a7;
+  --ok-dot: #2e9e44;
+  --pending-bg: #fff8e1;
+  --pending-line: #ffe082;
+  --pending-dot: #e69500;
+  --error-bg: #ffebee;
+  --error-line: #ef9a9a;
+  --error-dot: #d93025;
+
+  --radius-card: 8px;
+  --radius-control: 6px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #202124;
+    --text: #e8eaed;
+    --text-muted: #9aa0a6;
+    --line: #3c4043;
+    --surface: #2d2e31;
+    --surface-hover: #3a3b3f;
+    --surface-press: #46474c;
+    --accent: #f0565d;
+    --focus: #8ab4f8;
+
+    --ok-bg: #1d3323;
+    --ok-line: #2f5a39;
+    --ok-dot: #66bb6a;
+    --pending-bg: #3a3118;
+    --pending-line: #6b5a22;
+    --pending-dot: #ffca28;
+    --error-bg: #3b2022;
+    --error-line: #6e3033;
+    --error-dot: #ef5350;
+  }
+}
+
+[hidden] {
+  display: none !important;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 300px;
+  margin: 0;
+  padding: 16px;
+  background-color: var(--bg);
+  color: var(--text);
+  font: 13px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* Status: green = working, amber = connecting, grey = idle, red = problem */
+
+.status {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background-color: var(--surface);
+}
+
+.status-dot {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  margin-top: 4px; /* centres the dot on the first line of text */
+  border-radius: 50%;
+  background-color: var(--switch-off);
+}
+
+.status-detail {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.status[data-tone="ok"] {
+  background-color: var(--ok-bg);
+  border-color: var(--ok-line);
+}
+
+.status[data-tone="ok"] .status-dot {
+  background-color: var(--ok-dot);
+}
+
+.status[data-tone="pending"] {
+  background-color: var(--pending-bg);
+  border-color: var(--pending-line);
+}
+
+.status[data-tone="pending"] .status-dot {
+  background-color: var(--pending-dot);
+}
+
+.status[data-tone="error"] {
+  background-color: var(--error-bg);
+  border-color: var(--error-line);
+}
+
+.status[data-tone="error"] .status-dot {
+  background-color: var(--error-dot);
+}
+
+/* Getting-started steps, shown only while there is nothing to monitor */
+
+.help {
+  margin: 0;
+  padding-left: 20px;
+  color: var(--text-muted);
+}
+
+.help li + li {
+  margin-top: 2px;
+}
+
+.help strong {
+  color: var(--text);
+}
+
+/* Rows and the pause switch */
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+label.row:has(.switch) {
+  cursor: pointer;
+}
+
+.switch {
+  appearance: none;
+  position: relative;
+  flex: none;
+  width: 34px;
+  height: 20px;
+  margin: 0;
+  border-radius: 10px;
+  background-color: var(--switch-off);
+  cursor: pointer;
+  transition: background-color 150ms ease-out;
+}
+
+.switch::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #ffffff;
+}
+
+.switch:checked {
+  background-color: var(--accent);
+}
+
+.switch:checked::after {
+  translate: 14px 0;
+}
+
+/* Settings */
+
+.settings {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+h2 {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.setting {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  /* Hover background extends past the text so labels stay on the content edge */
+  margin-inline: -8px;
+  padding: 6px 8px;
+  border-radius: var(--radius-control);
+  cursor: pointer;
+}
+
+.option input {
+  flex: none;
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+.value {
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+input[type="range"] {
+  display: block;
+  width: 100%;
+  margin: 6px 0 0;
+  accent-color: var(--accent);
+}
+
+button {
+  padding: 8px 12px;
+  border: 1px solid transparent; /* keeps an edge in forced-colors mode */
+  border-radius: var(--radius-control);
+  background-color: var(--surface);
+  color: var(--text);
+  font-weight: 500;
+  cursor: pointer;
+  transition-property: background-color, scale;
+  transition-duration: 150ms;
+  transition-timing-function: ease-out;
+}
+
+button:not(:disabled):active {
+  background-color: var(--surface-press);
+}
+
+button:disabled {
+  color: var(--text-muted);
+  cursor: default;
+}
+
+:is(button, input):focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) {
+  .option:hover,
+  button:not(:disabled):hover {
+    background-color: var(--surface-hover);
+  }
+
+  button:not(:disabled):active {
+    background-color: var(--surface-press);
+  }
+}
+
+/* Movement only for people who have not asked for reduced motion.
+   Colour changes above still give feedback without it. */
+@media (prefers-reduced-motion: no-preference) {
+  .switch::after {
+    transition: translate 150ms ease-out;
+  }
+
+  button:not(:disabled):active {
+    scale: 0.96;
+  }
+}

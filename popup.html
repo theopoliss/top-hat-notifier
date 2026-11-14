@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="color-scheme" content="light dark">
+  <title>TopHat Question Notifier</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="header">
+    <img src="images/tophat_logo.png" alt="" width="28" height="28">
+    <h1>TopHat Question Notifier</h1>
+  </header>
+
+  <section id="status" class="status" data-tone="idle" role="status">
+    <span class="status-dot" aria-hidden="true"></span>
+    <div>
+      <div id="statusText">Checking…</div>
+      <div id="lastDetected" class="status-detail"></div>
+    </div>
+  </section>
+
+  <ol id="help" class="help" hidden>
+    <li>Open your TopHat course</li>
+    <li>Click the <strong>Classroom</strong> tab</li>
+    <li>You'll be notified when a question goes live</li>
+  </ol>
+
+  <label class="row">
+    <span>Pause alerts</span>
+    <input type="checkbox" id="paused" class="switch" role="switch">
+  </label>
+
+  <section class="settings">
+    <h2>Notification settings</h2>
+
+    <fieldset class="setting" aria-label="Notification type">
+      <label class="option">
+        <input type="radio" name="notificationType" value="both">
+        Desktop and sound
+      </label>
+      <label class="option">
+        <input type="radio" name="notificationType" value="desktop">
+        Desktop only
+      </label>
+      <label class="option">
+        <input type="radio" name="notificationType" value="sound">
+        Sound only
+      </label>
+    </fieldset>
+
+    <div class="setting" id="volumeSetting">
+      <label class="row" for="volume">
+        <span>Volume</span>
+        <span id="volumeValue" class="value">80%</span>
+      </label>
+      <input type="range" id="volume" min="0" max="100" value="80">
+    </div>
+
+    <div class="setting" id="requireInteractionSetting">
+      <label class="option">
+        <input type="checkbox" id="requireInteraction">
+        Keep notifications visible until dismissed
+      </label>
+    </div>
+
+    <button id="testNotification" type="button">Test notification</button>
+  </section>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "TopHat Question Notifier",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "description": "Extension that notifies you when a question goes live in your TopHat class.",
     "minimum_chrome_version": "116",
     "icons": {

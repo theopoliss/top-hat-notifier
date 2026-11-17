@@ -36,7 +36,10 @@ export const NOTIFICATION_TYPE = Object.freeze({
 export const DEFAULT_SETTINGS = Object.freeze({
     notificationType: NOTIFICATION_TYPE.BOTH,
     volume: 80, // 0-100
-    requireInteraction: true
+    // Off by default: on macOS, Chrome delivers these through a separate helper
+    // app ("Google Chrome Helper (Alerts)") that needs its own notification
+    // permission, and they are silently dropped without it.
+    requireInteraction: false
 });
 
 // Per-device state that should not follow the user to other machines.

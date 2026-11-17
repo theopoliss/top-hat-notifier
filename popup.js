@@ -37,13 +37,21 @@ const el = {
     volumeValue: document.getElementById('volumeValue'),
     requireInteractionSetting: document.getElementById('requireInteractionSetting'),
     requireInteraction: document.getElementById('requireInteraction'),
+    macAlertsHint: document.getElementById('macAlertsHint'),
     testButton: document.getElementById('testNotification')
 };
 
 init();
 
+let isMac = false;
+
 async function init() {
-    const [settings, localState] = await Promise.all([getSettings(), getLocalState()]);
+    const [settings, localState, platform] = await Promise.all([
+        getSettings(),
+        getLocalState(),
+        chrome.runtime.getPlatformInfo()
+    ]);
+    isMac = platform.os === 'mac';
 
     renderSettings(settings);
     el.paused.checked = localState.paused;
@@ -143,6 +151,13 @@ function renderSettings(settings) {
     el.volumeValue.textContent = `${settings.volume}%`;
     el.requireInteraction.checked = settings.requireInteraction;
     showRelevantSettings(settings.notificationType);
+    showMacAlertsHint();
+}
+
+// On macOS, persistent notifications go through a separate Chrome helper app
+// with its own system permission, and are dropped silently without it.
+function showMacAlertsHint() {
+    el.macAlertsHint.hidden = !(isMac && el.requireInteraction.checked);
 }
 
 // Volume only matters when sound plays; staying visible only matters for desktop notifications.
@@ -174,6 +189,7 @@ function bindEvents() {
     });
 
     el.requireInteraction.addEventListener('change', () => {
+        showMacAlertsHint();
         saveSettings({ requireInteraction: el.requireInteraction.checked });
     });
 
